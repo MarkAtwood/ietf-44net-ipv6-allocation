@@ -10,7 +10,7 @@
   <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="info"
-  docName="draft-ursini-44net-ipv6-allocation-00"
+  docName="draft-ursini-44net-ipv6-allocation-01"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -19,8 +19,8 @@
   version="3">
   <front>
     <title abbrev="44v6">Reservation of IPv6 Address Block 44::/16 for Amateur Radio Digital Communications (44Net)</title>
-    <seriesInfo name="Internet-Draft" value="draft-ursini-44net-ipv6-allocation-00"/>
-    <author fullname="Preston Louis Ursini">
+    <seriesInfo name="Internet-Draft" value="draft-ursini-44net-ipv6-allocation-01"/>
+    <author initials="P. L." surname="Ursini" fullname="Preston Louis Ursini">
       <organization>Paducah Internet Exchange (Paducah IX)</organization>
       <address>
         <postal>
@@ -34,542 +34,613 @@
         <email>preston@paducahix.net</email>
       </address>
     </author>
-    <date year="2025" month="10" day="19"/>
-    <abstract>
-      <t>This document proposes the reservation of the IPv6 address block 44::/16 for use by the Amateur Radio Digital Communications network (44Net, also known as AMPRNet). 44Net has historically used IPv4 network 44.0.0.0/8 as a globally-unique space for amateur radio digital communications. We present the rationale for an IPv6 counterpart, detailing the unique technical and social characteristics of 44Net that distinguish it from the commercial Internet, and the global public service it enables. While 44Net operates under amateur radio licensing and usage policies (non-commercial, experimental use by licensed operators), the proposed IPv6 block will be part of the global Internet routing table to facilitate interoperability, gateways, and research. This document includes background on 44Net, justification for the 44::/16 allocation, technical requirements (routing and DNS considerations), and the IANA action requested to reserve 44::/16 for Amateur Radio use as a special-purpose IPv6 prefix.</t>
-    </abstract>
+    <date year="2025" month="11" day="02"/>
+<abstract>
+  <t>
+    This document proposes the reservation of the IPv6 address block
+    <tt>44::/16</tt> for use by the global amateur radio community.
+    The allocation would serve as the IPv6 successor to the legacy IPv4
+    network 44.0.0.0/8, historically known as AMPRNet or 44Net, which has
+    provided a unified, non-commercial address space for amateur radio
+    digital communications for more than four decades.
+  </t>
+
+  <t>
+    The goal of this proposal is to maintain global cohesion and routing
+    consistency for amateur radio networks as they transition to IPv6,
+    while preserving the service's unique social and regulatory context.
+    Amateur networks operate under national licensing frameworks and are
+    limited to educational, experimental, and public-service purposes,
+    distinguishing them from commercial Internet use. The proposed prefix
+    would remain part of the global unicast routing table, enabling
+    interoperability, research, and gateway connectivity between amateur
+    systems and the wider Internet.
+  </t>
+
+  <t>
+    This document outlines the historical rationale for an amateur radio
+    IPv6 allocation, describes the technical and governance considerations
+    for maintaining a contiguous and hierarchically managed address space,
+    and specifies the IANA action required to reserve
+    <tt>44::/16</tt> as a special-purpose global IPv6 prefix for amateur
+    radio use.
+  </t>
+
+
+</abstract>
+
     <note>
       <t>This Internet-Draft is submitted in full conformance with the
       provisions of BCP 78 and BCP 79.</t>
     </note>
-  </front>
+</front>
+<middle>
 
-  <middle>
-    <section>
-	<name>Introduction</name>
-      <t>In 1981, a block of IPv4 addresses (the Class A network 44.0.0.0/8) was assigned for use by licensed amateur radio operators worldwide. This allocation, known as the Amateur Packet Radio Network (AMPRNet or 44Net), provided over 16 million IPv4 addresses dedicated to amateur radio digital communications. The foresight of early amateur digital pioneers like Hank Magnuski (KA6M) ensured that "internet-style networking would be the future" for amateur radio, and they wanted the emerging packet radio networks to participate. Since its allocation in the mid-1980s, 44Net has been used by amateur radio operators for scientific research and experimentation with digital communications over radio, advancing the state of the art in amateur networking and educating operators in these techniques.</t>
-      <t>Unlike typical commercial ISPs, 44Net is managed by the nonprofit Amateur Radio Digital Communications (ARDC) and operates under amateur radio regulations and community governance. Any licensed radio amateur can request an address in 44Net for experimental use, but commercial use is prohibited and the addresses are provided solely for amateur communications and technical experiments. The social contract of 44Net aligns with amateur radio’s non-pecuniary, public-service ethos, and all usage must comply with applicable radio regulations (e.g. identification, no obscured or encrypted communications except as allowed by law, etc.). These distinctive usage policies and the oversight by the amateur community set 44Net apart from the general Internet. At the same time, 44Net’s IP addresses are "public, globally routable, and static, no NAT, no CGNAT... IP as it was meant to be."  In other words, 44Net is an open network that interconnects with the global Internet, not a closed intranet. When one accesses a 44Net host, they know "it’s provided by a fellow ham in the spirit of amateur radio", yet the packets are carried over standard Internet infrastructure.</t>
 
-<t>
-Today, IPv4 addresses have become scarce and IPv6 adoption is widespread. ARDC has noted that "IPv6 is the future," and that the amateur community will eventually no longer need the entirety of 44/8 for IPv4. Indeed, a portion of the 44/8 space was sold in 2019 to fund grants for amateur radio innovation , leaving about 12 million IPv4 addresses in 44Net for ongoing use. As the Internet moves to IPv6, there is a clear need to designate an equivalent IPv6 prefix for amateur radio so that the global 44Net community can continue its activities seamlessly in the new protocol. However, under current policies, IANA and the Regional Internet Registries (RIRs) have no mechanism to allocate IPv6 space directly to an organization like ARDC for a worldwide amateur network. The result is that no IPv6 range has yet been set aside for ham radio, unlike the legacy 44/8 in IPv4.</t>
+<section anchor="Introduction">
+  <name>Introduction</name>
 
-<t>This document proposes to reserve 44::/16 in the IPv6 address space as the dedicated prefix for amateur radio digital communications networks (the "IPv6 44Net"). We choose 44::/16 to symbolically align with the IPv4 44.0.0.0/8 network number "44", while providing ample address space for the growth of amateur radio networking. The following sections outline the rationale for this allocation, the technical considerations for its use (routing, DNS, etc.), and the public benefits it will bring. By formally reserving 44::/16, the IETF and IANA would recognize and enable the continuation of amateur radio’s proud history of contributing to Internet technology and serving the public through independent, yet interconnected, digital networks.</t>
+  <t>
+    In 1981, the IPv4 network block 44.0.0.0/8 was assigned for use by licensed amateur
+    radio operators worldwide. This allocation known as the Amateur Packet Radio Network
+    (AMPRNet or 44Net) provided over sixteen million IPv4 addresses dedicated to
+    experimentation, education, and digital communications within the amateur service.
+    The foresight of early amateur radio pioneers such as Hank Magnuski (KA6M) and others
+    ensured that amateur networks could participate in the emerging Internet ecosystem,
+    applying packet networking principles to radio-based communications.
+  </t>
 
-    <t>Background and operational details of 44Net and its governance are further described by the Amateur Radio Digital Communications organization and community documentation
-(<xref target="ARDC-44Net"/>, <xref target="AMPR-IPv6-Wiki"/>, <xref target="Stroh-IPv6"/>,
-<xref target="ARDC-FAQ"/>, <xref target="ARDC-TOS"/>, and <xref target="ARDC-Emergency"/>).</t>
+  <t>
+    For more than four decades, this globally coordinated allocation has enabled licensed
+    operators and organizations to conduct research and experimentation using Internet
+    protocols over radio links, microwave backbones, and mesh networks. Amateur stations
+    have developed and refined technologies such as AX.25, TCP/IP over radio, and wireless
+    routing protocols, all while adhering to national amateur radio regulations that
+    prohibit commercial activity and require operator identification and transparency.
+    These policies distinguish amateur networks from the commercial Internet while
+    maintaining open interconnection 44Net has always been a public, routable, and
+    cooperative part of the Internet infrastructure.
+  </t>
 
+  <t>
+    As IPv4 addresses have become scarce and IPv6 adoption continues to expand, the need
+    for a unified IPv6 successor to 44Net has become increasingly clear. Portions of the
+    legacy 44/8 block have been returned or repurposed, and the remaining space continues
+    to support active experimental networks. However, no equivalent IPv6 allocation exists
+    for amateur radio today. Under current Regional Internet Registry (RIR) policies,
+    there is no straightforward mechanism for a globally distributed, non-commercial
+    service such as amateur radio to obtain a single, coherent IPv6 prefix that can be
+    used consistently across all regions.
+  </t>
+
+  <t>
+    This document therefore proposes the reservation of <tt>44::/16</tt> in the global
+    IPv6 address space for use by the amateur radio community. This allocation would serve
+    as the IPv6 counterpart to the legacy 44/8, preserving both operational continuity and
+    symbolic identity while enabling modern addressing, routing, and security practices.
+    The <tt>44::/16</tt> prefix would provide sufficient space for global expansion and
+    could be hierarchically delegated through existing RIRs and local Internet registries
+    (LIRs) to ensure distributed governance consistent with Internet best practices.
+  </t>
+
+  <t>
+    The following sections describe the rationale for this proposal, its historical
+    significance, and the technical and policy considerations associated with maintaining
+    a unified, non-commercial IPv6 address space for amateur radio experimentation and
+    public service. This reservation would allow amateur digital networks to continue
+    contributing to Internet research, education, and emergency communications in the
+    IPv6 era, maintaining the community's legacy as an integral part of Internet history.
+  </t>
 </section>
 
-    <section>
-	<name>Problem Statement</name>
-      <t>Despite the growth of IPv6 across the Internet, no corresponding IPv6 address space exists for the amateur radio community. As a result, individual operators and organizations must obtain IPv6 space through Regional Internet Registries (RIRs) or commercial Internet service providers-processes that are often incompatible with the amateur radio service’s non-commercial, volunteer nature. In many regions, small amateur operators do not qualify for IPv6 allocations under current RIR policies, or they must rely on temporary address assignments that cannot be globally routed under their own control.</t>
-<t>This absence of a unified IPv6 prefix fragments experimental amateur networks, prevents smooth dual-stack operation with 44Net IPv4 services, and complicates coordination of routing, DNS, and research initiatives. It also inhibits transition planning as IPv4 address space becomes increasingly constrained.</t>
-<t>This absence of a unified IPv6 prefix fragments experimental amateur networks, prevents smooth dual-stack operation with 44Net IPv4 services, and complicates coordination of routing, DNS, and research initiatives. It also inhibits transition planning as IPv4 address space becomes increasingly constrained.</t>
-<t>Therefore, there is a need for the IETF and IANA to formally designate a globally routable IPv6 address block for use by amateur radio digital communications networks. This allocation-analogous in spirit to 44.0.0.0/8 in IPv4 would ensure continuity of operations, enable cohesive experimentation, and recognize the long-standing public-service role of amateur radio within the Internet ecosystem.</t>
+<section anchor="problem-statement">
+  <name>Problem Statement</name>
+
+  <t>
+    Despite widespread deployment of IPv6, the global amateur radio
+    community lacks an equivalent IPv6 address space to the long-standing
+    IPv4 44/8 AMPRNet allocation. Individual operators and amateur
+    organizations currently depend on commercial Internet providers or
+    Regional Internet Registries (RIRs) for IPv6 connectivity processes
+    that are often misaligned with the amateur service's non-commercial
+    and volunteer nature. Many operators do not qualify for direct RIR
+    allocations, and provider-assigned prefixes are transient, not
+    portable, and frequently filtered, making them unsuitable for
+    long-term experimental networks.
+  </t>
+
+  <t>
+    The absence of a unified IPv6 allocation fragments the amateur
+    community's experimental and emergency communications networks.
+    Without a single globally recognized prefix, operators cannot
+    reliably coordinate routing, DNS, or dual-stack interoperability
+    with the existing 44/8 IPv4 infrastructure. This lack of cohesion
+    inhibits research collaboration and complicates the ongoing
+    transition to IPv6 within a service that has historically relied on
+    globally routable, stable addressing.
+  </t>
+
+  <t>
+    While some Regional Internet Registries do allow individuals or
+    organizations to receive IPv6 allocations, others reserve that
+    capability for ISPs or large institutions. Even where permitted,
+    such assignments are drawn from ordinary unicast space and lack the
+    cohesion, recognizability, and global identity that have defined
+    44Net for decades. If each amateur society or operator received an
+    unrelated prefix within its regional RIR pool, those addresses would
+    appear as ordinary commercial space with no shared heritage or
+    policy context. The result would be a patchwork of independent
+    allocations rather than a cohesive, globally identifiable address
+    family representing the amateur radio service.
+  </t>
+
 <t>
-  Under current global number resource policies, the Regional Internet Registries
-  (RIRs) are authorized to allocate IPv6 address space only to organizations
-  operating within their respective geographic regions and meeting defined
-  eligibility criteria, such as being an Internet Service Provider (ISP), Local
-  Internet Registry (LIR), or end-user institution with demonstrated operational
-  need. These policies are described in regional documents (for example,
-  ARIN NRPM §6.5 and RIPE Policy RIPE-738) and summarized in <xref target="RFC7020"/>.
-  The Amateur Radio Digital Communications (ARDC) network, however, is a
-  global, non-commercial community that spans all five RIR regions and does not
-  fit within those regional allocation models. Because there is no existing
-  mechanism for an RIR to issue a single, globally coordinated prefix for such a
-  community, only IANA can establish an address block reserved for worldwide,
-  non-commercial use through the Special-Purpose Address Registry process defined
-  in <xref target="RFC5156"/>. Accordingly, this document requests an IANA
-  reservation of 44::/16 to ensure global coordination for amateur radio digital
+  This proposal does not replace the RIR system but builds on it. The goal is for
+  IANA to reserve <tt>44::/16</tt> as a unified global allocation and then work
+  with the RIRs to subdivide it under a coordinated global policy framework.
+  Within each RIR, national amateur radio societies and local Internet registries
+  (LIRs) could administer sub-allocations just as they do today. This approach
+  operates entirely within existing policy mechanisms while preserving a single,
+  globally aggregated address family that remains easily recognizable in routing,
+  research, and coordination.
+</t>
+
+<t>
+  Amateur radio is internationally regulated under the International
+  Telecommunication Union (ITU) Radio Regulations, with licensed
+  operators active in nearly every country. Because RIR charters limit
+  allocations to their respective territories <xref target="RFC7020"
+  section="2.2"/>, a coordinated IANA reservation ensures that all
+  regions can participate under harmonized policy terms rather than
+  through isolated, region-specific efforts. Implemented through the
+  existing IANA-RIR framework, a single global prefix is the most
+  practical and policy-consistent means of maintaining global routing
+  cohesion and operational consistency for amateur radio digital
   communications.
 </t>
-<t>
-  Amateur radio is a globally regulated service under the International
-  Telecommunication Union (ITU), with licensed operators active in every
-  region of the world. Because Regional Internet Registries (RIRs) allocate
-  resources only within their own geographic boundaries, per their charters
-  defined in <xref target="RFC7020" section="2.2"/>, creating separate regional
-  IPv6 allocations for amateur radio would be impractical and inconsistent with
-  the service’s worldwide scope and cooperative coordination. Only IANA, acting
-  at the global level, can designate a single cross-RIR address block for this
-  purpose. Accordingly, an IANA-reserved prefix is the sole mechanism by which
-  a unified and globally routable IPv6 44Net space can be established.
-</t>
-    </section>
+
+
+</section>
 
 <section anchor="rationale" numbered="true" toc="include">
   <name>Rationale for an Amateur Radio IPv6 Allocation</name>
 
-  <section anchor="history" numbered="true" toc="include">
-    <name>Historical Significance and Community Needs</name>
-    <t>
-      The amateur radio community has a demonstrated need for dedicated IP resources to
-      conduct its activities. The success of IPv4 44/8 over four decades of use shows that
-      having a unified address space greatly facilitates amateur radio networking on a
-      global scale. Tens of thousands of amateur operators and clubs worldwide have used
-      44Net addresses to link radio-based networks, develop and test networking protocols,
-      and interconnect with academic or public networks for research. This experimentation
-      under real public Internet conditions has been possible because 44Net addresses are
-      globally unique and routable, allowing ham-run networks to exchange traffic with the
-      broader Internet when appropriate. Reserving 44::/16 ensures that the next generation
-      of amateur radio networking can transition to IPv6 without losing this global
-      connectivity.
-    </t>
-    <t>
-      Critically, an amateur radio allocation in IPv6 prevents fragmentation of address
-      space and routing. If no common prefix were available, each amateur radio group or
-      individual might approach different RIRs for IPv6 subnets. At best, large national-
-      level amateur radio organizations could qualify for IPv6 allocations from RIRs, but
-      this would result in many disparate prefixes (one per RIR or per country/region).
-      That approach is undesirable for the global routing system, since one goal of IPv6
-      design was to reduce BGP table fragmentation via hierarchical addressing. A single
-      /16 prefix for all amateur radio use can be aggregated (or at least kept within a
-      narrow range) in routing announcements, maintaining a cleaner global routing table
-      than dozens of separate amateur prefixes would. The alternative of using IPv6 ULAs
-      (Unique Local Addresses) was considered by amateurs, but was rejected because ULA
-      space (fc00::/7) is not globally routable. Amateur radio networks must be able to
-      reach the global Internet, and vice versa, to be useful. ULAs would confine ham
-      networks to isolated pockets, undermining one of 44Net’s key benefits interoperability
-      with public networks through gateways and collaboration in open research.
-    </t>
-    <t>
-      It is important to note that individual amateurs cannot realistically obtain IPv6
-      space under current RIR policies in many cases. RIR qualification rules for IPv6
-      allocations (e.g., needing to be an ISP or have a plan for thousands of addresses in
-      use) are burdensome for hobbyist experimenters. As one analysis noted, despite the
-      vast IPv6 address supply, "there doesn’t seem to be a way for an individual to obtain
-      a dedicated block of IPv6 addresses" under normal RIR processes. By contrast, ARDC’s
-      stewardship of 44/8 has enabled any licensed ham to get a small block of public IPs
-      for free, without needing to be an ISP or corporate entity. An IPv6 44Net block would
-      likewise be managed by ARDC (or its successors) to provide IPv6 addresses to operators
-      who could never get them otherwise, empowering individuals to innovate at the network
-      edge. This lowers the barrier to entry for digital experimentation, much as 44/8 did
-      in the IPv4 realm.
-    </t>
-  </section>
+<section anchor="history" numbered="true" toc="include">
+  <name>Historical Significance and Community Needs</name>
 
-  <section anchor="social" numbered="true" toc="include">
-    <name>Technical and Social Distinction from Commercial Internet Use</name>
+<t>
+  The amateur radio community has a long history of using dedicated IP address space
+  to advance education, research, and technical experimentation. The IPv4 allocation
+  of 44.0.0.0/8 approved in the early 1980s under the stewardship of
+  <contact fullname="Jon Postel" initials="J." surname="Postel"/> and established
+  through the efforts of <contact fullname="Brian Kantor" initials="B."
+  surname="Kantor"/> (WB6CYT) and collaborators at the University of California,
+  San Diego ( <xref target="Kantor44net"/> ) became the foundation for a worldwide
+  amateur digital network known as the Amateur Packet Radio Network (AMPRNet or 44Net).
+  Over the subsequent four decades, thousands of licensed operators, clubs, and research
+  institutions have used this space to interconnect packet radio systems, implement
+  TCP/IP over RF, develop mesh routing technologies, and explore interoperability
+  between amateur and academic networks. These efforts demonstrated the enduring value
+  of maintaining a unified, globally routable address range that identifies and connects
+  the amateur service as a cohesive and technically innovative community.
+</t>
+
+
     <t>
-      The proposed 44::/16 would be governed by the same usage policies and norms that have
-      guided 44/8. These policies ensure the address space is used in the service of amateur
-      radio’s mission, which is technical experimentation, education, and public service,
-      not profit or private gain. For example, ARDC’s Terms of Service for 44Net explicitly
-      state that addresses "are not permitted to be used for commercial purposes, nor in a
-      manner detrimental to the AMPRNet or to Amateur Radio." Addresses are licensed to
-      individuals (not sold or permanently transferred) and remain ARDC’s property to
-      ensure they aren’t monetized or misused. This governance model will carry into IPv6:
-      the 44::/16 space would be reserved specifically for amateur radio use under amateur
-      radio regulations. This means only holders of an amateur radio license (in any
-      country) and organizations supporting amateur radio would be eligible to obtain
-      sub-allocations, and they must adhere to applicable laws (for instance, identifying
-      their transmissions with call signs, and observing content restrictions such as no
-      obscene or encrypted communications, per national rules).
+      Allocating <tt>44::/16</tt> for amateur radio continues this legacy in the IPv6
+      era. It ensures that the next generation of digital experimentation, emergency
+      communications, and educational outreach can transition to IPv6 without fragmentation
+      or loss of identity. A single, contiguous prefix allows amateur radio networks to
+      remain globally coherent, easily recognized in routing, and operationally distinct
+      from commercial or private networks while still interoperating with the Internet at
+      large.
     </t>
+
     <t>
-      These constraints differentiate 44Net services from the general Internet, providing a
-      self-regulated "community network" flavor within the larger Internet. Much like
-      amateur radio spectrum allocations come with eligibility and usage rules, the IP
-      network allocation is a parallel construct in the Internet number space. The social
-      contract yields benefits: 44Net users have a shared understanding and purpose, and
-      often coordinate to avoid interference or abuse. The network carries traffic that is,
-      by rule, related to amateur radio activities (e.g., remote station control, radio
-      telemetry, VoIP links between repeaters, digipeaters and gateways, etc.), as opposed
-      to general public Internet traffic. Nonetheless, it is crucial to stress that we are
-      not creating a dark-net or a closed garden, 44Net in IPv6 will be fully capable of
-      exchanging traffic with any other Internet hosts, subject to the discretionary
-      interconnection agreements of network operators. In practice, many 44Net sites
-      connect to the Internet at large, and services like radio-to-Internet email gateways
-      (Winlink), ham radio mesh chat portals, and propagation data streams rely on
-      bi-directional connectivity.
+      Without a common allocation, amateur operators would need to request IPv6 resources
+      individually or through national organizations from their respective RIRs. This would
+      produce multiple unrelated prefixes, differing policies, and inconsistent address
+      management across regions. Such fragmentation undermines the efficiency goals of IPv6
+      routing and makes global coordination difficult. A unified <tt>/16</tt> space,
+      subdivided by the RIRs for local administration, preserves hierarchical aggregation
+      and maintains a clean, scalable routing model. This approach avoids unnecessary
+      route-table growth and supports policy uniformity without granting control to any
+      single organization.
     </t>
+
     <t>
-      The global public service enabled by 44Net is a strong motivator for keeping the
-      network interoperable with the broader Internet. Amateur radio networks frequently
-      provide backup and emergency communications when conventional systems fail or are
-      overloaded. For example, regional high-speed ham networks have been used to support
-      emergency operations during wildfires and disasters in the United States, carrying
-      email, voice-over-IP, and even live video for incident response when normal
-      infrastructure was down. Mesh networks like the Bay Area Mesh (BAM) in California use
-      amateur IPv4 addresses to deliver communications to served agencies during disasters,
-      emergencies, and large community events. Similarly, the Rocky Mountain Ham Radio
-      network spans multiple states with microwave links and has provided backup
-      communications during wildfires and public-service events. In all these cases, the
-      ability to interface with the Internet (for example, to deliver an email to a
-      recipient on the public Internet, or to pull weather data from an online API) is
-      essential. Reserving 44::/16 ensures that amateur radio’s emergency and public-
-      service digital networks have a stable, well-known address range in IPv6, facilitating
-      rapid integration with municipal and Internet-connected resources in times of need.
-      Network operators will be aware that traffic from 44::/16 may be originating from
-      volunteer-operated emergency networks, and thus can be handled appropriately (e.g.,
-      not mistakenly filtered as illegitimate).
+      The alternative of using non-routable IPv6 space, such as Unique Local Addresses
+      (ULAs), was considered but rejected. Amateur networks often serve public functions
+      including research, remote control of equipment, and emergency communications that
+      require bidirectional Internet reachability. ULA space would isolate these networks
+      from the global Internet, eliminating one of the greatest benefits of the original
+      44Net: its ability to interoperate with external systems for experimentation,
+      coordination, and public service.
     </t>
+
     <t>
-      Finally, from a research and development perspective, a dedicated IPv6 block for
-      amateur radio opens opportunities for globally coordinated experimentation. Amateur
-      networks have pioneered or incubated ideas that later influenced mainstream
-      networking, for instance, early TCP/IP over radio links, packet radio protocols like
-      AX.25, and wireless mesh routing techniques. Having a common address space where
-      experimental services can be deployed by volunteers worldwide, under real-world
-      conditions but with less risk to commercial operations, is a boon to Internet
-      research. Projects can deploy across the 44::/16 range knowing that the IPs are
-      globally reachable and uniquely tied to the ham community. This sandbox-like
-      environment (with full Internet connectivity) can foster innovation in areas like
-      delay-tolerant networking for telemetry, novel routing schemes, or even embedding
-      call sign information into addresses. The technical distinction of 44Net is that it
-      is an Internet microcosm run by hobbyists and volunteers, which encourages creative
-      solutions, reserving an IPv6 block continues this tradition into the foreseeable
-      future.
+      Finally, while national RIR policies allow organizations to obtain IPv6 space, the
+      process is often impractical for individual amateur operators. The global amateur
+      service consists largely of volunteers and hobbyists who do not operate commercial
+      networks or meet RIR criteria for membership or large-scale deployment. A community
+      allocation ensures equitable access to globally routable IPv6 space for all licensed
+      amateurs, lowering barriers to participation and preserving the educational and
+      experimental spirit that has defined amateur networking for over forty years.
     </t>
   </section>
+</section>
+
+<section anchor="social" numbered="true" toc="include">
+  <name>Technical and Social Distinction from Commercial Internet Use</name>
+
+<t>
+  As with the historical 44/8 allocation, this space is intended solely for
+  lawful activities within the amateur radio service as defined by national
+  administrations and the International Telecommunication Union (ITU). These
+  include technical experimentation, education, public-service and emergency
+  communications, community resilience projects, and the advancement of radio
+  science and digital communications techniques.  The <tt>44::/16</tt> address
+  space provides a framework for these activities to operate openly on the
+  Internet while remaining governed by the non-commercial, self-identified, and
+  cooperative principles that distinguish the amateur service from commercial
+  or governmental networks.
+</t>
+
+  <t>
+    These restrictions differentiate amateur radio networking from general commercial
+    Internet use. Much like spectrum allocations, this IP address space represents a
+    community resource governed by eligibility and conduct rules. Operators identify
+    themselves by call sign, observe national content restrictions, and maintain
+    transparency in network operation. The result is a global, self-regulated community
+    network within the broader Internet openly connected, but socially and technically
+    distinct in purpose. The <tt>44::/16</tt> space will be fully routable and capable of
+    interconnection with the public Internet, yet its use will remain guided by the
+    cooperative norms of the amateur service rather than by market or commercial motives.
+  </t>
+
+  <t>
+    A major motivation for maintaining this distinction is the proven public-service role
+    of amateur radio digital networks. Amateur operators have provided emergency
+    communications during disasters when conventional systems were unavailable, using
+    packet radio, microwave links, and mesh networks to carry email, voice, and telemetry.
+    Recognizing this, allocating a well-defined and stable IPv6 prefix allows emergency
+    networks to integrate seamlessly with Internet-connected systems such as municipal
+    servers or disaster-response applications without confusion or inconsistent routing
+    treatment. Network operators can easily identify traffic from <tt>44::/16</tt> as
+    originating from volunteer-operated, non-commercial infrastructure that often supports
+    public safety functions.
+  </t>
+
+  <t>
+    Beyond emergency use, a globally coordinated amateur IPv6 space also supports
+    research and innovation. The amateur community has a long record of pioneering
+    techniques later adopted by the wider Internet, including early TCP/IP over radio,
+    packet switching, and wireless mesh networking. Providing a contiguous IPv6 block for
+    experimentation allows such work to continue in a structured, globally consistent
+    environment. Projects in fields such as delay-tolerant networking, telemetry, and
+    novel routing can be deployed across <tt>44::/16</tt> with clear attribution and
+    accountability. In this way, the amateur service continues its historical role as a
+    proving ground for technical innovation, bridging hobbyist experimentation with the
+    evolution of the global Internet.
+  </t>
+
+<t>
+  Beyond its community and governance value, the reservation of
+  <tt>44::/16</tt> also serves as a catalyst for broader IPv6 adoption.
+  Many amateur operators, educational programs, and technical volunteers
+  continue to rely on IPv4-based infrastructure simply because an
+  organized path to IPv6 deployment has not existed within the amateur
+  domain.  Establishing a globally recognized IPv6 prefix gives these
+  users a tangible reason to learn, deploy, and experiment with IPv6
+  technologies from address planning and router configuration to DNS,
+  BGP, and security.  This will help cultivate the next generation of
+  network engineers and innovators by linking practical IPv6 skills with
+  real-world, public-benefit experimentation.  In this way, the
+  <tt>44::/16</tt> allocation not only preserves a legacy, but also
+  strengthens the overall IPv6 ecosystem through education and
+  participation.
+</t>
+
+</section>
 
   <section anchor="technical" numbered="true" toc="include">
     <name>Technical Considerations for 44::/16 Usage</name>
 
     <section anchor="routing" numbered="true" toc="include">
-      <name>Routing and Connectivity</name>
-      <t>
-        The IPv6 prefix 44::/16 will be designated as global unicast address space,
-        intended to be routed on the public Internet. Network operators and Internet
-        Exchange Points should accept and propagate routes for sub-prefixes of 44::/16 in
-        the same manner as any other provider-assigned IPv6 space. (In particular,
-        operators should update any prefix filters that assume all valid global unicast
-        space is under 2000::/3. The 44::/16 block lies outside 2000::/3 and, once reserved
-        by IANA, must be treated as legitimate globally-routed space, analogous to how
-        2002::/16 was reserved for 6to4 traffic in IPv6.) Entities announcing 44::/16 space
-        will be subject to normal Internet routing policies, they will need to adhere to
-        BGP best practices and obtain an ASN, etc., just as with 44/8 in IPv4 where many
-        amateurs negotiate with their ISP to announce a 44Net subnet via BGP.
-      </t>
-      <t>
-        It is expected that ARDC (or a designated successor operator for 44Net) will
-        coordinate the assignment of sub-prefixes within 44::/16 to amateur radio operators,
-        clubs, and networks. Likely, this will involve a hierarchical delegation (for
-        example, ARDC may allocate /48s or /56s to individual stations or regional groups,
-        and possibly larger blocks like /32 to national-level networks or large
-        organizations). The exact allocation plan is outside the scope of this document,
-        but the key point is that all such assignments will be made under the umbrella of
-        amateur radio usage and through a centralized registry (much as ARDC’s portal
-        manages IPv4 44Net allocations today). This central management will help ensure
-        that no two amateurs inadvertently use the same address space, and that each
-        allocation is backed by a valid amateur radio callsign or organization.
-      </t>
-      <t>
-        In terms of routing architecture, there are a few possible models, all enabled by
-        reserving this single large prefix:
-      </t>
-      <t>
-        <strong>Distributed Announcements</strong>: Individual amateurs or radio clubs, who have obtained
-        a 44::/L (some length) assignment, may convince their local Internet service
-        provider to route that prefix via BGP to them (for connectivity to their home or
-        club network). This mirrors the current IPv4 practice where hams either use a
-        worldwide IP-in-IP tunnel mesh (historically via amprgw.ucsd.edu) or arrange for
-        direct BGP announcements of their 44/8 subnets. With IPv6, direct routing is more
-        feasible since IPv6 is readily available on many residential connections. We
-        anticipate numerous small BGP announcements globally for 44::/L sub-prefixes (e.g.
-        a /48 per ham who negotiates it). The impact on the global table should be
-        acceptable if those are aggregatable to some degree (for example, possibly one per
-        country or region if coordinated). Network operators should not automatically
-        filter out longer prefixes under 44::/16, as legitimate announcements (even as long
-        as /48) may originate from this space.
-      </t>
-<t>
-  <strong>Regional or Distributed Announcements</strong>: Unlike the historical IPv4
-  model, ARDC will <bcp14>SHALL NOT</bcp14> originate or announce the entire
-  <tt>44::/16</tt> prefix globally. Instead, only the organizations or licensed
-  amateur operators who have received specific sub-prefixes (e.g., <tt>/32</tt>,
-  <tt>/40</tt>, or <tt>/48</tt> allocations) <bcp14>SHOULD</bcp14> announce
-  their own routes directly or through their local Internet service providers.
-  This decentralized model aligns with current Internet routing best practices
-  and ensures scalability.  
-  ARDC or regional coordinators <bcp14>MAY</bcp14> announce limited aggregate
-  prefixes on behalf of groups of clubs, regional networks, or emergency-service
-  consortia to improve reachability where practical, but there will be no
-  single, global <tt>44::/16</tt> announcement from a central gateway. The large
-  size of the IPv6 space makes it feasible for each club or regional grouping to
-  manage its own aggregate without fragmenting the global routing table, while
-  maintaining routing autonomy for individual amateur networks.
-</t>
-      <t>
-        <strong>Internal Ham Mesh Routing</strong>: Within the 44Net community, there may be overlay
-        routing (VPNs or mesh networks over RF) interconnecting sites. These can continue
-        to use protocols like RIP44 or new mechanisms to exchange reachability of 44::/16
-        subnets among participants, analogous to how the IPv4 AMPRNet uses an encapsulated
-        mesh today. The existence of an IPv6 allocation does not mandate how the traffic is
-        carried; it simply gives a consistent addressing scheme. Hams may tunnel IPv6 over
-        existing IPv4 links, or vice versa, during the transition.
-      </t>
-      <t>
-        A crucial consideration is that 44::/16 remains fully open for traffic exchange
-        with any other Internet host. No special handling (like 6to4 relay processing or
-        NAT) is required, packets to/from 44::/16 will be native IPv6 packets routed
-        normally. Network administrators should be aware that although 44Net hosts adhere
-        to amateur radio rules at the application level, they are standard Internet hosts
-        at the network level. Thus, security or policy devices (firewalls, intrusion
-        detection, etc.) should treat 44::/16 traffic similarly to traffic from any other
-        ISP, aside from perhaps recognizing its source as an amateur radio network for
-        traffic engineering or quality-of-service purposes if desired. We discourage any
-        blanket filtering of 44::/16 simply because it is a "special" allocation, unlike
-        IPv6 link-local or ULA addresses, this prefix is intended to carry real,
-        globally-addressable traffic.
-      </t>
-<t>
-  Some network operators may initially filter <tt>44::/16</tt> as "bogon"
-  (unallocated) space until it appears in the official IANA IPv6 Special-Purpose
-  Address Registry. This behavior is expected during the early transition period.
-  Once IANA formally reserves and publishes the block, those filters will need to
-  be updated to permit routing of <tt>44::/16</tt> and its sub-prefixes.  
-  Community outreach and best-current-practice (BCP) updates-similar to those
-  that followed the introduction of <tt>100.64.0.0/10</tt> for Carrier-Grade NAT
-  (CGN) will be required to ensure rapid propagation of the new allocation and
-  prevent inadvertent reachability issues.  
-  To assist this process, <strong>network operators, IXPs, and transit providers
-  <bcp14>SHOULD</bcp14> proactively whitelist 44::/16</strong> once the IANA registry entry is
-  published, treating it as standard global unicast space.
-</t>
+      <name>Routing and Registry Model for 44::/16</name>
+      <t>This document proposes that 44::/16 be reserved by IANA and subdivided among the five Regional Internet Registries (RIRs), each receiving a contiguous allocation (for example, a /19). Each RIR would then issue sub-allocations to eligible amateur radio organizations and licensed operators under a unified global policy framework. This approach maintains historical continuity with earlier amateur digital communication networks that operated under IPv4 network 44/8 (commonly referred to as AMPRNet or 44Net) while integrating fully with the existing IPv6 number resource governance model.</t>
+
+      <t>Under this model, 44::/16 remains under IANA oversight, with operational administration distributed through the established RIR system. This ensures transparency, policy consistency, and accountability while preserving alignment with standard Internet number resource management practices. The RIRs would continue to act as the authoritative stewards and policy regulators, while individual amateur organizations would function as downstream members analogous to Local Internet Registries (LIRs), ISPs, or end-user organizations. This structure prevents any single entity from exercising unilateral control over the address space and maintains decentralized governance consistent with global Internet principles.</t>
+  <t>
+    This arrangement would parallel existing global number resource
+    policies described in the RIR frameworks (for example, ARIN NRPM
+    Section 10), in which IANA maintains the root allocation and
+    delegates to the RIRs under a globally coordinated policy approved by
+    all regions. The intent of this document is to establish the
+    technical reservation through the IETF process, with subsequent
+    policy coordination to occur through the RIR global policy
+    mechanisms.
+  </t>
+        <t>Regional amateur radio organizations may apply to their respective RIRs for address space allocations under harmonized policy terms that restrict usage to non-commercial, licensed amateur service purposes. This allows each RIR to implement regionally appropriate procedures while maintaining global cohesion through consistent eligibility and operational guidelines.</t>
+      <t>From a technical perspective, 44::/16 would be listed in the <xref target="IANA-IPV6-SP"/> registry [IANA-IPV6-SP]. The registry entry should include the following attribute values:</t>
+<dl>
+  <dt>Source</dt><dd>True</dd>
+  <dt>Destination</dt><dd>True</dd>
+  <dt>Forwardable</dt><dd>True</dd>
+  <dt>Globally Reachable</dt><dd>True</dd>
+  <dt>Reserved-by-Protocol</dt><dd>False</dd>
+</dl>
+
+<t>These parameters indicate that the prefix is globally routable and should be treated as standard unicast space, consistent with other globally reachable allocations.</t>
 
 <t>
-  <strong>Distributed Announcements and Registry Role</strong>: ARDC will function solely
-  as the <strong>registrar and coordinator</strong> of address assignments within
-  <tt>44::/16</tt> and <bcp14>SHOULD NOT</bcp14> operate as a network provider or
-  originate global BGP announcements for the prefix. Each licensed amateur,
-  club, or affiliated organization receiving an allocation (for example,
-  <tt>/32</tt>, <tt>/40</tt>, or <tt>/48</tt>) <bcp14>MAY</bcp14> announce
-  their own sub-prefix through their local Internet service provider or upstream
-  network as appropriate.
-  Regional or national amateur organizations <bcp14>MAY</bcp14> choose to
-  advertise aggregated sub-prefixes covering multiple local allocations to
-  improve reachability, but there will be no single worldwide advertisement of
-  <tt>44::/16</tt>.
-  This model keeps ARDC in its proper administrative role maintaining the
-  allocation registry and ensuring uniqueness while leaving routing control
-  entirely with the independent operators who use the space.
+  Operators who maintain bogon or unallocated-prefix filters will need to
+  update them once <tt>44::/16</tt> is entered into the IANA IPv6
+  Special-Purpose Address Registry.  Until that update occurs, prefixes
+  derived from <tt>44::/16</tt> may be inadvertently filtered as
+  unallocated space.  This is a normal operational transition that has
+  accompanied previous IANA allocations, and it can be mitigated through
+  coordination with bogon-list maintainers and routing security
+  communities.  No protocol changes or router software updates are
+  required; only filter data sources will need to reflect the new
+  allocation status.
 </t>
 
+<t>This structure preserves a contiguous and globally recognizable address family while distributing administrative authority through existing RIR mechanisms. It maintains continuity with the historical amateur coordination model, avoids centralization, and leverages the stability and neutrality of the RIR framework to ensure long-term sustainability of non-commercial amateur IPv6 networks.</t>
 
-    </section>
-
-    <section anchor="dns" numbered="true" toc="include">
-      <name>Reverse DNS and Naming</name>
-      <t>
-        IANA should delegate the reverse DNS zone corresponding to 44::/16 to the ARDC or
-        its designated DNS operators. In IPv6, reverse lookups are under the .ip6.arpa
-        domain. For a /16, the delegation will be somewhat unusual because it is on a
-        nibble boundary. The 44::/16 prefix in hex is 0x0044::/16, i.e., addresses start
-        with the 16-bit value 0x0044. The reverse DNS zone could be considered as
-        4.4.ip6.arpa (representing all addresses with the first two hex digits "44") and be
-        delegated to ARDC name servers. ARDC already manages forward DNS for the ampr.org
-        domain and the in-addr.arpa for 44/8 (delegated through ARIN’s legacy processes).
-        For IPv6, ARDC can similarly manage PTR records for any assigned addresses within
-        44::/16. This will allow reverse DNS resolution of amateur radio hosts. Typically,
-        44Net hostnames are under the ampr.org domain (often incorporating call signs or
-        location identifiers), and we expect the same practice to continue. Proper reverse
-        DNS is not only a convenience; it also prevents misconfigured reverse lookups that
-        some services use for security checks.
-      </t>
-    </section>
-
-    <section anchor="plan" numbered="true" toc="include">
-      <name>Addressing Plan and Prefix Utilization</name>
-      <t>
-        While the detailed addressing plan will be developed by the amateur community, we
-        note some technical guidelines and possibilities:
-      </t>
-      <t>
-        <strong>Size of End-User Assignments</strong>: It is anticipated that end-user networks (e.g., a
-        ham’s home station or a club’s network) will receive at least a /64 (as that is the
-        IPv6 subnet size required for SLAAC autoconfiguration). However, more likely a /48
-        per user may be standard, as is common in IPv6 for giving ample subnet space. A /48
-        allows 65,536 subnets for the user, effectively unlimited for any foreseeable
-        amateur radio station’s needs. Even if every individual assignment were a /48, the
-        44::/16 block can accommodate approximately 4.3 billion /48s, far exceeding the
-        number of amateur radio operators on the planet. In other words, 44::/16 is
-        extremely generous in size, which is appropriate to ensure no shortage and to
-        mirror the "large swath" philosophy of the original 44/8.
-      </t>
-      <t>
-        <strong>Hierarchical Structure</strong>: The high-order bits within 44::/16 could be subdivided
-        geographically or by administrative region if desired. For example, the amateur
-        community could decide that 44:0000::/24 goes to Region 1 (Europe/Africa),
-        44:0100::/24 to Region 2 (Americas), 44:0200::/24 to Region 3 (Asia/Pacific), etc.,
-        aligning with IARU or ITU regions. Under each region, country-based sub-allocations
-        could be made (similar to country coordinators who handled IPv4 44Net allocations
-        in the past). Alternatively, ARDC may manage it as a flat space and allocate
-        sequentially as requests come. These decisions will be made by the amateur
-        community governance. The IETF’s concern is only that such structuring is possible
-        and facilitated by having a large contiguous block.
-      </t>
-      <t>
-        <strong>Interoperability with IPv4 44Net</strong>: During transition, many amateur systems will
-        run dual-stack on both 44.x.x.x addresses and 44:: addresses. Gateways will likely
-        be set up to bridge IPv4-only radio nodes to IPv6-only nodes via protocol
-        translation or tunn        translation or tunneling. One foreseeable mechanism is to use NAT64 or SIIT
-        translators on the border between IPv6 44Net and legacy IPv4 44Net, allowing, for
-        example, an old packet BBS on 44.1.2.3 to communicate with an IPv6-only station at
-        44:abcd::1. Because the addressing shares the "44" prefix conceptually, operators
-        can implement simple rules (perhaps mapping the IPv4 44/8 space into a subset of
-        44::/16 for translation). While not strictly required for IANA to reserve the
-        block, the alignment of numbering (44 in both families) is mentally convenient and
-        can ease documentation and tooling.
-      </t>
-    </section>
-
-    <section anchor="opssec" numbered="true" toc="include">
-      <name>Operational Security and Abuse Prevention</name>
-      <t>
-        Although primarily a policy matter, it is worth noting technically that ARDC and
-        the amateur community will likely maintain filters to ensure that only authorized
-        (licensed) users announce or use 44::/16 addresses. Currently, for IPv4, there is an
-        "encapsulation gateway" and registration system; a similar approach could be taken
-        where unregistered use of 44::/16 is deterred. From the perspective of the wider
-        Internet, however, the security considerations are straightforward: treat 44::/16
-        like any other customer IP range. If a network sees traffic from an apparent
-        44::/16 address that is not also properly announced in BGP by an authorized ASN,
-        that traffic could be spoofed (as with any prefix). Network operators should apply
-        BCP38 (ingress filtering) at their edges, and if an ISP is providing transit for an
-        amateur station announcing 44::/L, they should ensure the announcement is
-        authorized (perhaps ARDC will publish routing objects or an RPKI ROA for the
-        allocations to assist in validation).
-      </t>
-    </section>
-  </section>
-
-  <section anchor="security" numbered="true" toc="include">
-    <name>Security Considerations</name>
-    <t>
-      Reservation of 44::/16 does not introduce new vulnerabilities to Internet protocols;
-      it simply earmarks an address range for a specific community. The addresses in this
-      range should be considered as normal global IPv6 addresses from a security
-      standpoint. That said, some characteristics of their use are notable:
-    </t>
-    <t>
-      <strong>Open Access vs. Authorized Use</strong>: Only licensed amateur operators will be authorized
-      to use 44::/16 addresses, but there is no technical enforcement of this at the IP
-      level. In theory, a malicious party could spoof or squat on 44:: addresses. This is
-      no different from misuse of any unallocated or special-purpose prefix. Best common
-      practices like filtering non-routed prefixes and source-address validation mitigate
-      this risk. Once IANA allocates 44::/16 to ARDC, any route originating from that space
-      should be from ARDC or its designees; others can be viewed as rogue.
-    </t>
-    <t>
-      <strong>Amateur Traffic Content</strong>: Due to amateur radio regulations, much of the traffic on
-      44Net may be in the clear (unencrypted) or contain identifying information like call
-      signs. Attackers on the Internet could potentially eavesdrop on or target ham radio
-      nodes knowing they might have less hardened services (since many are run by
-      volunteers). The community should remain mindful of general cybersecurity practices
-      (firewalls, patches) even while operating in the spirit of open experimentation. The
-      reservation itself does not exacerbate these issues-rather, having a known prefix
-      might even allow network defenders to more easily recognize and monitor 44Net traffic
-      patterns if needed.
-    </t>
-    <t>
-      <strong>Emergency Communications</strong>: During emergency use of ham networks, confidentiality of
-      certain traffic might be a concern (e.g., personal information in an email over
-      Winlink). Amateur rules typically forbid encryption, so sensitive data is sometimes
-      sent in plaintext out of necessity. Users should be cautious about what data they
-      transmit. Again, this is a general caution and not created by the IPv6 allocation;
-      the allocation simply extends the environment where these longstanding amateur radio
-      practices apply.
-    </t>
-    <t>
-      Overall, the security posture of 44::/16 will depend on the operational security of
-      those who use it. By keeping the space identifiable and managed (via ARDC), it may
-      actually aid incident response, for example, abuse complaints about a 44:: address
-      can be forwarded to a well-known team in the amateur community. The cooperative
-      nature of that community is such that security issues (intrusions, misuse) are likely
-      to be resolved quickly through out-of-band coordination (mailing lists, etc.).
-    </t>
-  </section>
 </section>
+
+
+<section anchor="plan" numbered="true" toc="include">
+  <name>Addressing Plan and Prefix Utilization</name>
+
+  <t>
+    While the specific addressing plan for <tt>44::/16</tt> will be developed within the
+    amateur radio community and coordinated through the Regional Internet Registries
+    (RIRs), several technical guidelines and considerations are anticipated.
+  </t>
+
+  <t>
+    <strong>Size of End-User Assignments:</strong> It is expected that individual amateur
+    operators or organizations (such as clubs or repeater groups) will receive at least a
+    <tt>/48</tt>, consistent with IPv6 subnetting requirements for SLAAC
+    autoconfiguration. In practice, a <tt>/48</tt> per licensee or entity may be the
+    standard assignment size, providing up to 65,536 internal subnets sufficient for any
+    foreseeable amateur station, research, or emergency communications deployment. Even if
+    every amateur worldwide were assigned a <tt>/48</tt>, the <tt>44::/16</tt> block
+    would provide several orders of magnitude more capacity than needed, ensuring long-term
+    scalability and avoiding renumbering pressure.
+  </t>
+
+  <t>
+    <strong>Hierarchical Structure:</strong> The <tt>44::/16</tt> prefix may be
+    subdivided hierarchically for coordination purposes. For example, each RIR could
+    manage a defined regional prefix (e.g., <tt>44:0000::/24</tt> for one region,
+    <tt>44:0100::/24</tt> for another) according to their existing geographical
+    boundaries. Within each region, national amateur societies or community registries
+    could administer sub-allocations to licensed operators. This structure parallels how
+    IPv4 44Net allocations were historically coordinated, while aligning with the modern
+    RIR model for accountability, data accuracy, and policy consistency.
+  </t>
+
+  <t>
+    <strong>Interoperability with Legacy 44Net:</strong> During transition, many systems
+    will operate in dual-stack mode, utilizing both IPv4 44.0.0.0/8 and IPv6
+    <tt>44::/16</tt>. Gateways may employ NAT64, SIIT, or other translation techniques
+    to interconnect IPv4-only and IPv6-only amateur systems. Because <tt>44::/16</tt>
+    preserves conceptual continuity with the original "44" addressing identity, operators
+    can define clear and predictable mapping schemes for protocol translation or symbolic
+    references. This continuity simplifies network documentation, community education, and
+    legacy system adaptation during the IPv6 transition period.
+  </t>
+
+  <t>
+    Overall, the allocation of a large contiguous block ensures technical flexibility,
+    equitable distribution, and operational simplicity. It provides a cohesive global
+    foundation for experimentation, research, and emergency communication while remaining
+    compatible with existing Internet routing and address management practices.
+  </t>
+</section>
+
+</section>
+
+
+<section anchor="security" numbered="true" toc="include">
+  <name>Security Considerations</name>
+
+  <t>
+    Reservation of <tt>44::/16</tt> does not introduce any new security vulnerabilities
+    to the Internet architecture or its protocols. The block functions as ordinary global
+    unicast space from a technical perspective; it merely identifies a coordinated set of
+    users with a shared non-commercial purpose. Network operators should treat this prefix
+    as they would any other globally routable allocation when applying filtering,
+    validation, and monitoring practices.
+  </t>
+
+  <t>
+    <strong>Authorized vs. Unrestricted Use:</strong> Only licensed amateur operators and
+    recognized amateur organizations will be authorized to use address space derived from
+    <tt>44::/16</tt>. However, there is no technical mechanism in the IPv6 protocol to
+    enforce that limitation. As with any other allocated prefix, unauthorized or spoofed
+    use is possible. Standard operational practices such as ingress filtering
+    (<xref target="BCP38"/>), route-origin validation, and coordination through RIR abuse
+    contacts provide the best mitigations against such misuse.
+  </t>
+
+  <t>
+    <strong>Operational Security and Transparency:</strong> Amateur radio systems are
+    generally operated by volunteers and may host experimental or lightly secured services.
+    Some amateur applications also transmit identifying information, such as call signs,
+    in cleartext due to regulatory requirements. These characteristics could make nodes
+    using this prefix more observable to adversaries. Operators are encouraged to follow
+    general network security practices timely patching, access controls, and minimal
+    exposure of unnecessary services even within the constraints of amateur regulations.
+  </t>
+
+  <t>
+    <strong>Emergency and Public Service Use:</strong> Amateur networks are sometimes
+    employed during emergency or disaster scenarios to carry non-commercial traffic that
+    may contain sensitive personal or situational data. Because amateur regulations often
+    restrict encryption, users should remain aware that transmissions over the public
+    Internet or via shared gateways may be visible to third parties. The reservation of
+    <tt>44::/16</tt> neither creates nor amplifies this risk; it simply extends existing
+    practices into IPv6.
+  </t>
+
+  <t>
+    Overall, the security profile of <tt>44::/16</tt> will depend on the diligence of
+    its participants and the cooperative monitoring framework maintained through the RIRs
+    and amateur organizations that administer sub-allocations. By assigning this space
+    through well-defined registry channels, potential abuse can be traced and resolved
+    through established operational contacts, improving accountability compared to
+    fragmented, unregistered use.
+  </t>
+</section>
+
 
 <section anchor="iana" numbered="true" toc="include">
   <name>IANA Considerations</name>
+
   <t>
-    IANA is requested to reserve the IPv6 address block <tt>44::/16</tt> and
-    register it as follows:
+    IANA is requested to reserve the IPv6 address block <tt>44::/16</tt>
+    and record it in the <xref target="IANA-IPV6-SP">IPv6 Special-Purpose
+    Address Space</xref> registry.
   </t>
 
-<t>This document uses the terminology and conventions defined in
-<xref target="RFC2119"/>, <xref target="RFC8174"/>, and <xref target="RFC5156"/>.</t>
-
+  <t>
+    This document uses the terminology and conventions defined in
+    <xref target="RFC2119"/>, <xref target="RFC8174"/>, and
+    <xref target="RFC5156"/>.
+  </t>
 
   <ul>
     <li>
       <t><strong>Address Block:</strong> 44::/16</t>
     </li>
     <li>
-      <t><strong>Name/Description:</strong> Amateur Radio Digital Communications Network
-      (44Net - AMPRNet)</t>
+      <t><strong>Name/Description:</strong> Amateur Radio IPv6 Address
+      Space</t>
     </li>
     <li>
-      <t><strong>Reservation Purpose:</strong> Globally unique IPv6 prefix for amateur
-      radio networks, to be managed by ARDC for use by licensed Amateur Radio operators and
-      organizations worldwide. This is the IPv6 counterpart to IPv4 network 44.0.0.0/8,
-      which has been used for amateur radio digital communications since the 1980s.</t>
+      <t><strong>Reservation Purpose:</strong> Globally unique IPv6
+      address block for amateur radio digital communications networks.
+      This allocation serves as the IPv6 successor to the historical
+      44.0.0.0/8 (AMPRNet) space, preserving a contiguous address family
+      for worldwide amateur experimentation and non-commercial operation.</t>
     </li>
     <li>
-      <t><strong>Routability:</strong> Yes - This prefix is intended to be routed on the
-      global Internet. It is not private or local-use; network operators should treat it as
-      they would any allocated unicast space.</t>
+      <t><strong>Administrative Model:</strong> The <tt>44::/16</tt>
+      block <bcp14>SHOULD</bcp14> be subdivided and issued to each
+      Regional Internet Registry (RIR), which will in turn make
+      sub-allocations to qualified amateur radio organizations and
+      licensed operators in their regions. This maintains RIR oversight,
+      policy accountability, and decentralization, ensuring that no
+      single organization has exclusive administrative control while
+      enabling coordinated global usage under consistent eligibility
+      criteria.</t>
     </li>
     <li>
-      <t><strong>Reverse DNS:</strong> IANA is requested to delegate the corresponding
-      <tt>.ip6.arpa</tt> zone (e.g., <tt>4.4.ip6.arpa</tt>) to name servers specified by
-      the Amateur Radio Digital Communications (ARDC), which will manage PTR records for
-      this space.</t>
+      <t><strong>Routability:</strong> This prefix is intended to be
+      globally routable. It is not private or local-use; network
+      operators <bcp14>SHOULD</bcp14> treat it as they would any other
+      allocated unicast space.</t>
     </li>
     <li>
-      <t><strong>Administrative Contact:</strong> Amateur Radio Digital Communications
-      (ARDC) - contact information to be provided to IANA, for example, the email
-      <tt>contact@ardc.net</tt>, which is already used for inquiries.</t>
+      <t><strong>Reverse DNS:</strong> IANA <bcp14>SHOULD</bcp14> delegate
+      the corresponding <tt>.ip6.arpa</tt> zone (e.g., <tt>4.4.ip6.arpa</tt>)
+      to RIR-managed name servers or to designated sub-delegates under
+      coordination with IANA.</t>
     </li>
   </ul>
+
   <t>
-    This reservation will be recorded in the IPv6 Special-Purpose Address Registry
-    maintained by IANA. The allocation <bcp14>SHOULD</bcp14> be announced to the Regional
-    Internet Registries (RIRs) so that they do not accidentally issue any overlapping
-    allocation. Given that 44::/16 is outside the current 2000::/3 range, RIRs normally
-    would not allocate from it unless global policy changes. After reservation, ARDC will
-    work with IANA and the RIRs as needed to ensure WHOIS and routing databases reflect
-    that 44::/16 is assigned for Amateur Radio use (for example, ARIN’s WHOIS might include
-    a record for this block noting ARDC as the registrant, similar to how the legacy 44/8
-    is noted).
+    The following attributes are to be registered in the IPv6
+    Special-Purpose Address Space registry:
   </t>
+
+  <table anchor="iana-attrs">
+    <name>IPv6 Special-Purpose Attributes for 44::/16</name>
+    <thead>
+      <tr>
+        <th>Field</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Source</td><td>True</td></tr>
+      <tr><td>Destination</td><td>True</td></tr>
+      <tr><td>Forwardable</td><td>True</td></tr>
+      <tr><td>Globally Reachable</td><td>True</td></tr>
+      <tr><td>Reserved-by-Protocol</td><td>False</td></tr>
+    </tbody>
+  </table>
+
   <t>
-    No other IANA services or registries are affected by this document. In particular, no
-    code points or protocol parameters are requested aside from the IPv6 address prefix
-    itself and its reverse DNS delegation.
+    Upon reservation, IANA <bcp14>SHOULD</bcp14> notify all RIRs to
+    prevent accidental overlap with future unicast allocations. The
+    reservation of 44::/16 does not create any additional protocol
+    parameters or code points beyond the address block and its reverse
+    DNS delegation.
   </t>
 </section>
 
+
 <section anchor="conclusion" numbered="true" toc="include">
   <name>Conclusion</name>
+
   <t>
-    By allocating 44::/16 to amateur radio, the IETF and IANA will help bridge the past and
-    future of experimental networking. The 44Net community, born in the era of IPv4, can
-    continue to innovate in IPv6 without barriers, maintaining a globally coherent network
-    that is separate in purpose but connected in infrastructure. This proposal honors the
-    legacy of amateurs’ contributions to networking recognizing that, as one amateur
-    noted, "forward-looking Amateur Radio operators worked within the IETF to reserve
-    44.0.0.0/8" decades ago, and now it is time for the next generation to have their
-    "44-space" in IPv6.
+    The reservation of <tt>44::/16</tt> provides a practical and historically consistent
+    framework for enabling continued amateur radio innovation in the IPv6 era. It preserves
+    the collaborative and experimental spirit that characterized the legacy 44.0.0.0/8
+    network, while modernizing its governance under the established Regional Internet
+    Registry (RIR) system. This ensures that amateur networks remain globally coordinated,
+    non-commercial, and technically aligned with current Internet addressing practices.
   </t>
+
   <t>
-    The allocation of 44::/16 is a proportionally small ask in the vast IPv6 address space,
-    but it carries significant symbolic and practical value. It demonstrates that the
-    Internet has room for non-commercial, volunteer-driven networks that serve education
-    and the public interest. It ensures that amateur radio’s digital renaissance will be
-    IPv6-ready, enriching the global Internet with a diverse community of experimenters.
+    By distributing the address space among the RIRs, this approach maintains policy
+    accountability and regional fairness while keeping the global prefix contiguous and
+    recognizable. It prevents administrative centralization, supports transparency through
+    existing RIR oversight mechanisms, and allows organizations such as national amateur
+    associations to operate as Local Internet Registries (LIRs) within a harmonized global
+    framework. This balance between heritage and modern governance enables the amateur
+    community to participate fully in IPv6 while remaining distinct in purpose.
   </t>
+
   <t>
-    The author and the amateur radio community urge the IANA and IETF to implement this
-    reservation expediently. This will enable a smooth transition for 44Net services to
-    IPv6 and encourage continued collaboration between amateur radio and Internet
-    technologists for years to come.
+    The allocation of <tt>44::/16</tt> represents a proportionally small request within
+    the vast IPv6 address space but offers significant educational and public benefit. It
+    affirms that the Internet continues to support experimentation, learning, and
+    innovation by volunteer-driven communities. By bridging the legacy of 44Net with the
+    infrastructure of IPv6, this proposal helps ensure that amateur radio's long tradition
+    of advancing communications technology will continue to contribute meaningfully to the
+    broader Internet ecosystem.
   </t>
 </section>
+
+<section anchor="acknowledgments">
+  <name>Acknowledgments</name>
+
+  <t>
+    The author wishes to acknowledge the pioneering work of
+    <contact fullname="Brian Kantor" initials="B." surname="Kantor"/>
+    (WB6CYT), whose vision and stewardship of the 44/8 AMPRNet allocation
+    made global amateur Internet experimentation possible. His
+    contributions established the foundation upon which this IPv6
+    proposal is built.
+  </t>
+
+  <t>
+    The author also acknowledges his father,
+    <contact fullname="Louis F. Ursini" initials="L." surname="Ursini"/>,
+    whose early involvement in Internet routing and coordination helped
+    inspire this work. His technical curiosity and commitment to open
+    networking continue to influence the author's approach to
+    collaborative Internet development.
+  </t>
+</section>
+
+
 </middle>
 
 <back>
@@ -583,7 +654,7 @@ Today, IPv4 addresses have become scarce and IPv6 adoption is widespread. ARDC h
     <title>The Internet Numbers Registry System</title>
     <author initials="R." surname="Housley" fullname="Russ Housley"/>
     <author initials="D." surname="Conrad" fullname="David Conrad"/>
-    <author initials="E." surname="Kuerbis" fullname="Eliot Kuerbis"/>
+    <author initials="E." surname="Kuerbis" fullname="E. Kuerbis"/>
     <date year="2013" month="August"/>
   </front>
   <seriesInfo name="RFC" value="7020"/>
@@ -623,71 +694,37 @@ Today, IPv4 addresses have become scarce and IPv6 adoption is widespread. ARDC h
   <references>
     <name>Informative References</name>
 
-    <reference anchor="ARDC-44Net" target="https://www.ardc.net/apply/44net/">
-      <front>
-        <title>What is 44Net? (Frequently Asked Questions)</title>
-        <author>
-          <organization>Amateur Radio Digital Communications (ARDC)</organization>
-        </author>
-        <date/>
-      </front>
-      <seriesInfo name="OTHER" value="Web Resource"/>
-    </reference>
+<reference anchor="Kantor44net" target="https://www.ampr.org/">
+  <front>
+    <title>The AMPRNet (44Net) Project</title>
+    <author fullname="Brian Kantor" initials="B." surname="Kantor"/>
+    <date year="1981"/>
+  </front>
+</reference>
 
-    <reference anchor="AMPR-IPv6-Wiki" target="https://wiki.ampr.org/wiki/IPv6">
-      <front>
-        <title>44Net Wiki - IPv6</title>
-        <author>
-          <organization>44Net Community Wiki</organization>
-        </author>
-        <date/>
-      </front>
-      <seriesInfo name="OTHER" value="Web Resource"/>
-    </reference>
+<reference anchor="BCP38" target="https://datatracker.ietf.org/doc/html/bcp38">
+  <front>
+    <title>Ingress Filtering for Multihomed Networks</title>
+    <author fullname="Ferguson, P."/>
+    <author fullname="Senie, D."/>
+    <date month="May" year="2000"/>
+  </front>
+  <seriesInfo name="BCP" value="84"/>
+  <seriesInfo name="RFC" value="3704"/>
+</reference>
 
-    <reference anchor="Stroh-IPv6" target="https://zeroretries.substack.com/p/zero-retries-0127">
-      <front>
-        <title>No 44Net within IPv6</title>
-        <author fullname="Steve Stroh" initials="S." surname="Stroh"/>
-        <date year="2023" month="December"/>
-      </front>
-      <seriesInfo name="OTHER" value="Newsletter"/>
-    </reference>
+<reference anchor="IANA-IPV6-SP"
+           target="https://www.iana.org/assignments/iana-ipv6-special-registry/">
+  <front>
+    <title>IANA IPv6 Special-Purpose Address Registry</title>
+    <author>
+      <organization>IANA</organization>
+    </author>
+    <date year="2024"/>
+  </front>
+</reference>
 
-    <reference anchor="ARDC-FAQ" target="https://www.ardc.net/apply/faq/">
-      <front>
-        <title>ARDC FAQ - History of 44/8 Allocation and IPv6 Planning</title>
-        <author>
-          <organization>Amateur Radio Digital Communications (ARDC)</organization>
-        </author>
-        <date/>
-      </front>
-      <seriesInfo name="OTHER" value="Web Resource"/>
-    </reference>
-
-    <reference anchor="ARDC-TOS" target="https://portal.ampr.org/tos">
-      <front>
-        <title>ARDC Terms of Service</title>
-        <author>
-          <organization>Amateur Radio Digital Communications (ARDC)</organization>
-        </author>
-        <date/>
-      </front>
-      <seriesInfo name="OTHER" value="Policy Document"/>
-    </reference>
-
-    <reference anchor="ARDC-Emergency" target="https://www.ardc.net/news/building-infrastructure-rocky-mountains-bay-area/">
-      <front>
-        <title>Building Infrastructure in the Rocky Mountains and the Bay Area</title>
-        <author>
-          <organization>Amateur Radio Digital Communications (ARDC)</organization>
-        </author>
-        <date/>
-      </front>
-      <seriesInfo name="OTHER" value="News Article"/>
-    </reference>
-
-  </references>
+ </references>
 
 </back>
 
