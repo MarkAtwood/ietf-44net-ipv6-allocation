@@ -10,7 +10,7 @@
   <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="info"
-  docName="draft-ursini-44net-ipv6-allocation-01"
+  docName="draft-ursini-44net-ipv6-allocation-02"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -19,7 +19,7 @@
   version="3">
   <front>
     <title abbrev="44v6">Reservation of IPv6 Address Block 44::/16 for Amateur Radio Digital Communications (44Net)</title>
-    <seriesInfo name="Internet-Draft" value="draft-ursini-44net-ipv6-allocation-01"/>
+    <seriesInfo name="Internet-Draft" value="draft-ursini-44net-ipv6-allocation-02"/>
     <author initials="P. L." surname="Ursini" fullname="Preston Louis Ursini">
       <organization>Paducah Internet Exchange (Paducah IX)</organization>
       <address>
@@ -34,7 +34,7 @@
         <email>preston@paducahix.net</email>
       </address>
     </author>
-    <date year="2025" month="11" day="02"/>
+    <date year="2026" month="11" day="12"/>
 <abstract>
   <t>
     This document proposes the reservation of the IPv6 address block
@@ -424,6 +424,19 @@
   </t>
 
   <t>
+    <strong>Globally Coordinated Block:</strong> One <tt>/32</tt>,
+    <tt>44:4400::/32</tt>, is held outside the regional allocations
+    and is not issued to any RIR. It is for addressing schemes that
+    need the same prefix everywhere, such as schemes in which the
+    address is derived from a station's callsign: under a
+    <tt>/32</tt> such a scheme has 96 bits for the station's identity,
+    enough to encode any amateur callsign. Regional allocations
+    <bcp14>MUST NOT</bcp14> include <tt>44:4400::/32</tt>. Its use is
+    coordinated by the amateur radio community and documented in
+    separate specifications.
+  </t>
+
+  <t>
     <strong>Interoperability with Legacy 44Net:</strong> During transition, many systems
     will operate in dual-stack mode, utilizing both IPv4 44.0.0.0/8 and IPv6
     <tt>44::/16</tt>. Gateways may employ NAT64, SIIT, or other translation techniques
@@ -537,7 +550,9 @@
       policy accountability, and decentralization, ensuring that no
       single organization has exclusive administrative control while
       enabling coordinated global usage under consistent eligibility
-      criteria.</t>
+      criteria. One <tt>/32</tt>, <tt>44:4400::/32</tt>, is held
+      outside the regional allocations for globally coordinated
+      addressing schemes (<xref target="plan"/>).</t>
     </li>
     <li>
       <t><strong>Routability:</strong> This prefix is intended to be
@@ -547,7 +562,7 @@
     </li>
     <li>
       <t><strong>Reverse DNS:</strong> IANA <bcp14>SHOULD</bcp14> delegate
-      the corresponding <tt>.ip6.arpa</tt> zone (e.g., <tt>4.4.ip6.arpa</tt>)
+      the corresponding reverse zone, <tt>4.4.0.0.ip6.arpa</tt>,
       to RIR-managed name servers or to designated sub-delegates under
       coordination with IANA.</t>
     </li>
