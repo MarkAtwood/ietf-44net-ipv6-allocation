@@ -131,6 +131,20 @@
     contributing to Internet research, education, and emergency communications in the
     IPv6 era, maintaining the community's legacy as an integral part of Internet history.
   </t>
+
+  <section anchor="requirements-language">
+    <name>Requirements Language</name>
+    <t>
+      The key words "<bcp14>MUST</bcp14>", "<bcp14>MUST NOT</bcp14>",
+      "<bcp14>REQUIRED</bcp14>", "<bcp14>SHALL</bcp14>",
+      "<bcp14>SHALL NOT</bcp14>", "<bcp14>SHOULD</bcp14>",
+      "<bcp14>SHOULD NOT</bcp14>", "<bcp14>RECOMMENDED</bcp14>",
+      "<bcp14>NOT RECOMMENDED</bcp14>", "<bcp14>MAY</bcp14>", and
+      "<bcp14>OPTIONAL</bcp14>" in this document are to be interpreted as
+      described in BCP 14 <xref target="RFC2119"/> <xref target="RFC8174"/>
+      when, and only when, they appear in all capitals, as shown here.
+    </t>
+  </section>
 </section>
 
 <section anchor="problem-statement">
@@ -521,9 +535,8 @@
   </t>
 
   <t>
-    This document uses the terminology and conventions defined in
-    <xref target="RFC2119"/>, <xref target="RFC8174"/>, and
-    <xref target="RFC5156"/>.
+    The registry and the meaning of its fields are defined in
+    <xref target="RFC6890"/>.
   </t>
 
   <ul>
@@ -660,6 +673,9 @@
 
 <back>
 
+  <references>
+    <name>References</name>
+
   <!-- === Normative References === -->
   <references>
     <name>Normative References</name>
@@ -693,14 +709,17 @@
       <seriesInfo name="RFC" value="8174"/>
     </reference>
 
-    <reference anchor="RFC5156" target="https://www.rfc-editor.org/info/rfc5156">
+    <reference anchor="RFC6890" target="https://www.rfc-editor.org/info/rfc6890">
       <front>
-        <title>Special-Purpose IPv6 Addresses</title>
-        <author initials="B." surname="Hinden" fullname="Bob Hinden"/>
-        <author initials="S." surname="Deering" fullname="Steve Deering"/>
-        <date year="2008" month="April"/>
+        <title>Special-Purpose IP Address Registries</title>
+        <author initials="M." surname="Cotton" fullname="Michelle Cotton"/>
+        <author initials="L." surname="Vegoda" fullname="Leo Vegoda"/>
+        <author initials="R." surname="Bonica" fullname="Ronald Bonica"/>
+        <author initials="B." surname="Haberman" fullname="Brian Haberman"/>
+        <date year="2013" month="April"/>
       </front>
-      <seriesInfo name="RFC" value="5156"/>
+      <seriesInfo name="BCP" value="153"/>
+      <seriesInfo name="RFC" value="6890"/>
     </reference>
   </references>
 
@@ -740,6 +759,7 @@
 </reference>
 
  </references>
+  </references>
 
 </back>
 
